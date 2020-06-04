@@ -1,0 +1,79 @@
+Config { 
+
+   -- appearance
+     font =         "JetBrains Mono:size=9:bold:antialias=false"
+   , bgColor =      "black"
+   , fgColor =      "#646464"
+   , position =     Top
+   , border =       BottomB
+   , borderColor =  "#646464"
+
+   -- layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = " %multicpu% | %memory% | %dynnetwork% }{ %date% "
+
+   -- general behavior
+   , lowerOnStart =     False    -- send to bottom of window stack on start
+   , hideOnStart =      False   -- start with window unmapped (hidden)
+   , allDesktops =      True    -- show on all desktops
+   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , pickBroadest =     False   -- choose widest display (multi-monitor)
+   , persistent =       True    -- enable/disable hiding (True = disabled)
+   
+
+   , commands = 
+          -- network activity monitor
+        [ Run DynNetwork     [ "--template" , "<tx> <rx>kB/s"
+                             , "--Low"      , "100000"
+                             , "--High"     , "500000"
+                             , "--low"      , "#CCFF7D"
+                             , "--normal"   , "#90E897"
+                             , "--high"     , "#B3FFE5"
+                             --, "-w"         , "3"
+                             ] 10
+	
+	, Run StdinReader
+	
+	, Run MultiCpu       [ "--template" , "<autototal>%"
+                             , "--Low"      , "30"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "#CCFF7D"
+                             , "--normal"   , "#E8DA4D"
+                             , "--high"     , "#FFBC1E"
+                             --, "-w"         , "2"
+                             ] 10
+	
+	, Run Memory         [ "--template" ,"<usedratio>%"
+                             , "--Low"      , "60"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "#CCFF7D"
+                             , "--normal"   , "#E8DA4D"
+                             , "--high"     , "#FFBC1E"
+                             ] 10
+	
+	, Run Battery        [ "--template" , "<acstatus>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "#FFBC1E"
+                             , "--normal"   , "#E8DA4D"
+                             , "--high"     , "#CCFF7D"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "<left>%"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#90E897><left>% charging</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#B3FFE5>full</fc>"
+                             ] 50
+	
+	, Run Date           "%A, %B %e, %Y %r %Z" "date" 10
+
+	, Run Com ".bin/volume.sh" [] "volume" 10
+
+	, Run Com "~/.dotfiles/xmobar-fcitx.sh" [] "fcitx" 5
+
+	]
+
+}
