@@ -16,6 +16,9 @@ import XMonad.Layout.Tabbed
 
 import XMonad.Actions.GridSelect
 
+import qualified DBus as D
+import qualified DBus.Client as D
+import qualified Codec.Binary.UTF8.String as UTF8
 
 main = xmonad defaultConfig
 
@@ -39,17 +42,12 @@ myLayout = avoidStruts
                 all = ResizableTall 1 (3/100) (1/2) [] ||| Simplest ||| Full ||| Grid 
 
 myManageFloat = composeAll
-              [ className =? "VLC" --> doFloat
-              , className =? "TheDesk" --> doFloat
-              , className =? "Firefox"    --> doFloat
-              , className =? "Nyaovim" --> doFloat
+              [ className =? "Pavucontrol" --> doFloat
               ]
 
 myManageShift = composeAll
               [ className =? "Nemo" --> doShift "5"
-              , className =? "Firefox" --> doShift "2"
-              , className =? "Tilix" --> doShift "1"
               ]
 
 myStartup = do
-           spawn "feh --bg-fill ~/Desktop/Wallpapers/thunderstorm.jpg"
+           spawn "feh --bg-fill ~/dotfiles/WALLPAPER.jpg"

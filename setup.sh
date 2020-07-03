@@ -1,6 +1,3 @@
-#! /bin/sh
+#! /bin/bash
 
-: "main" {
-           ln -l ./xmonad.hs $HOME/.xmonad/xmonad.hs
-           ln -l ./.xmobarrc $HOME/.xmobarrc
-	 }
+source ./setup/symlink.sh
